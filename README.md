@@ -1,4 +1,4 @@
-# WSN (Wireless Sensor Network) Simulator
+# PyWSNSim
 
 무선 센서 네트워크 시뮬레이터는 센서 노드들의 네트워크 동작을 시뮬레이션하고 분석하는 도구입니다.
 Wireless Sensor Network Simulator is a tool for simulating and analyzing the network behavior of sensor nodes.
