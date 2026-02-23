@@ -16,8 +16,8 @@ Wireless Sensor Network Simulator is a tool for simulating and analyzing the net
 
 1. 저장소 클론 (Clone the repository)
 ```bash
-git clone https://github.com/yourusername/Python-WSN-Simulators.git
-cd Python-WSN-Simulators
+git clone https://github.com/sumannam/PyWSNSim.git
+cd PyWSNSim
 ```
 
 2. 가상환경 생성 및 활성화 (선택사항) (Create and activate virtual environment (optional))
@@ -52,7 +52,7 @@ python main.py
 ## 프로젝트 구조 (Project Structure)
 
 ```
-Python-WSN-Simulators/
+PyWSNSim/
 ├── core/                    # 핵심 모듈 (Core modules)
 │   ├── nodes/              # 노드 관련 클래스 (Node-related classes)
 │   └── routing/            # 라우팅 프로토콜 (Routing protocols)
