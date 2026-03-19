@@ -8,10 +8,9 @@ import numpy as np
 import logging  # 로깅 모듈 추가
 from matplotlib.animation import FuncAnimation
 import matplotlib.animation as animation
-
 try:
     import seaborn as sns
-    plt.style.use('seaborn')
+    plt.style.use('seaborn-v0_8')
 except ImportError:
     plt.style.use('default')  # matplotlib 기본 스타일 사용
 
