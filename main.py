@@ -23,6 +23,7 @@ from attacks.Sinkhole import Sinkhole
 from utils.visualize_network import plot_wsn_network, classify_wsn_nodes, setup_logging
 from utils.animation import animate_report_transmission
 from utils.data_handler import save_nodes_state, save_simulation_results
+from utils.resource_monitor import ResourceMonitor
 from config import *
 
 
@@ -218,12 +219,17 @@ def main():
     
     logger.info("==== WSN Simulation Start ====")
     
+    # --- 모니터링 객체 생성 및 시작 ---
+    perf_monitor = ResourceMonitor(interval=0.5)
+    perf_monitor.start()
+    logger.info("Started CPU and Memory monitoring in background...")
+    
     # 재현성을 위한 랜덤 시드 설정
     np.random.seed(RANDOM_SEED)
     logger.debug(f"Random seed set to {RANDOM_SEED}")
 
     # 1. Field 설정
-    wsn_field = Field(FIELD_SIZE, FIELD_SIZE)
+    wsn_field = Field(FIELD_SIZE, FIELD_SIZE) 
     wsn_field.deploy_nodes(NUM_NODES)
     wsn_field.set_base_station(BS_POSITION[0], BS_POSITION[1])
     wsn_field.find_neighbors()
@@ -262,6 +268,19 @@ def main():
         'ATTACK_RANGE': ATTACK_RANGE
     }
     animate_report_transmission(wsn_field, transmission_results, classified_nodes, animation_config)
+    
+    np.random.seed(RANDOM_SEED)
+    wsn_field = Field(FIELD_SIZE, FIELD_SIZE)
+    # ... 중략 ...
+    # animate_report_transmission(...) 까지 실행
+    
+    # --- 모니터링 종료 및 결과 출력 ---
+    perf_results = perf_monitor.stop()
+    
+    logger.info("==== System Resource Usage ====")
+    logger.info(f"Average CPU Usage: {perf_results['avg_cpu']:.2f}% (Max: {perf_results['max_cpu']:.2f}%)")
+    logger.info(f"Average Memory Usage: {perf_results['avg_mem']:.2f} MB (Peak: {perf_results['max_mem']:.2f} MB)")
+    logger.info("===============================")
     
     logger.info("==== WSN Simulation End ====")
 
