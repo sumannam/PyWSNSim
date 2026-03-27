@@ -9,6 +9,10 @@ def get_routing_protocol(protocol_name, wsn_field):
     
     if protocol_name == "dijkstra":
         return DijkstraRouting(wsn_field)
+    elif protocol_name == "AODV":
+        from .AODVRouting import AODVRouting
+        return AODVRouting(wsn_field)
+    
     # 나중에 다른 프로토콜을 추가할 수 있음
     # elif protocol_name == "aodv":
     #     return AODVRouting(wsn_field)
