@@ -6,7 +6,7 @@ Wireless Sensor Network Simulator is a tool for simulating and analyzing the net
 ## 주요 기능 (Main Features)
 
 - 센서 노드 배치 및 네트워크 구성 (Sensor node deployment and network configuration)
-- Dijkstra 기반 라우팅 프로토콜 구현 (Dijkstra-based routing protocol implementation)
+- Dijkstra / AODV 기반 라우팅 프로토콜 구현 (Dijkstra / AODV-based routing protocol implementation)
 - 에너지 소비 모델링 (전송/수신 에너지 계산) (Energy consumption modeling - transmission/reception energy calculation)
 - Sinkhole 공격 시뮬레이션 (Sinkhole attack simulation)
 - 네트워크 시각화 및 애니메이션 (Network visualization and animation)
