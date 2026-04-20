@@ -23,6 +23,7 @@ from test_Field import test_Field
 from test_MicazMotes import test_MicazMotes
 from test_Main import test_Main
 from test_core.test_DijkstraRouting import test_DijkstraRouting
+from test_core.test_AODVRouting import TestAODVRouting
 
 
 def test_attacks():
@@ -31,6 +32,7 @@ def test_attacks():
     test_field = unittest.TestLoader().loadTestsFromTestCase(test_Field)
     test_micazmotes = unittest.TestLoader().loadTestsFromTestCase(test_MicazMotes)
     test_dijkstra = unittest.TestLoader().loadTestsFromTestCase(test_DijkstraRouting)
+    test_aodv = unittest.TestLoader().loadTestsFromTestCase(TestAODVRouting)
 
     allTests = unittest.TestSuite()
     
@@ -39,6 +41,7 @@ def test_attacks():
     allTests.addTest(test_field)
     allTests.addTest(test_micazmotes)
     allTests.addTest(test_dijkstra)
+    allTests.addTest(test_aodv)
 
     unittest.TextTestRunner(verbosity=2, failfast=True).run(allTests)
 

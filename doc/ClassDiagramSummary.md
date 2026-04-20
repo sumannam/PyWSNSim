@@ -1,5 +1,7 @@
 classDiagram
-    %% Field 클래스를 중앙에 배치
+    %%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryBorderColor': '#3174f1', 'primaryTextColor': '#000000', 'lineColor': '#000000', 'fontFamily': 'sans-serif'}}}%%
+
+    %% Field 클래스
     class Field {
         +width: float
         +height: float
@@ -41,8 +43,15 @@ classDiagram
     
     class DijkstraRouting {
         +setup_routing()
-        #_connect_direct_to_bs()
-        #_apply_dijkstra_routing()
+        +connect_direct_to_bs()
+        +apply_dijkstra_routing()
+    }
+
+    %% 추가된 AODVRouting 클래스
+    class AODVRouting {
+        +routing_table: dict
+        +setup_routing()
+        +find_aodv_path(source_id, target_id)
     }
     
     %% attacks 모듈
@@ -56,7 +65,7 @@ classDiagram
     }
     
     class Sinkhole {
-        +grid_size: int
+        +int grid_size
         +calculate_node_density()
         +execute_attack(num_attackers)
         +launch_outside_attack(num_attackers)
@@ -76,6 +85,7 @@ classDiagram
     
     Field <-- BaseRoutingProtocol
     BaseRoutingProtocol <|-- DijkstraRouting
+    BaseRoutingProtocol <|-- AODVRouting
     
     Field <-- NetworkAttackBase
     NetworkAttackBase <|-- Sinkhole
