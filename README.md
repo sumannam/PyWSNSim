@@ -112,3 +112,23 @@ This project is licensed under the MIT License.
 6. Pull Request 생성 (Create Pull Request)
    - PR 제목: "Resolve #XX: 작업 내용" (PR title: "Resolve #XX: Work description")
    - PR 설명에 관련 이슈 번호 링크 (Link related issue number in PR description)
+  
+## Citation
+
+If you use this work useful, please citing our paper:
+```bibtex
+@article{Han2026,
+  title = {{PyWSNSim}: A {Python}-based component-oriented simulation framework for sinkhole attack analysis in large-scale {WSNs}},
+  volume = {34},
+  ISSN = {2352-7110},
+  url = {http://dx.doi.org/10.1016/j.softx.2026.102667},
+  DOI = {10.1016/j.softx.2026.102667},
+  journal = {SoftwareX},
+  publisher = {Elsevier BV},
+  author = {Han,  Seungwoo and Tanaka,  Toshihisa and Nam,  Su Man},
+  year = {2026},
+  month = June,
+  pages = {102667}
+}
+```
+
