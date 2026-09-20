@@ -257,7 +257,7 @@ def plot_wsn_network(wsn_field, classified_nodes, attack_range):
     plot_folder = os.path.join(script_dir, 'results')
     if not os.path.exists(plot_folder):
         os.makedirs(plot_folder)
-    plt.savefig(os.path.join(plot_folder, 'network_deployment.png'), 
+    plt.savefig(os.path.join(plot_folder, 'network_deployment.pdf'), 
                bbox_inches='tight', dpi=300)
     
     plt.show()
