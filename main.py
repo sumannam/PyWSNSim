@@ -8,11 +8,11 @@ import numpy as np
 import logging  # 로깅 모듈 추가
 from matplotlib.animation import FuncAnimation
 import matplotlib.animation as animation
-try:
-    import seaborn as sns
-    plt.style.use('seaborn-v0_8')
-except ImportError:
-    plt.style.use('default')  # matplotlib 기본 스타일 사용
+# try:
+import seaborn as sns
+plt.style.use('seaborn-v0_8')
+# except ImportError:
+#     plt.style.use('default')  # matplotlib 기본 스타일 사용
 
 from core.Field import Field
 
@@ -79,17 +79,21 @@ def simulate_with_attack(wsn_field, routing, attack_timing, num_reports):
     attack = Sinkhole(wsn_field, attack_type=ATTACK_TYPE, attack_range=ATTACK_RANGE)
     malicious_nodes = None  # 공격자 노드 추적
 
+    # 공격 시점 계산 (전체 보고서 수 대비 %)
+    attack_at_report = int(num_reports * int(attack_timing) / 100)
+
     logger.info(f"\nSimulating {NUM_REPORTS} Report Transmissions:")
     logger.info("-" * 50)
     logger.info(f"Attack probability: {ATTACK_PROBABILITY}% per report")
-    
+    logger.info(f"Attack timing: report #{attack_at_report} ({attack_timing}% of reports)")
+
     start_time = time.time()
 
     def validate_path(path):
         """경로의 유효성을 검증하는 함수"""
         if not path:
             return False
-        
+
         for node_id in path:
             if node_id == "BS":
                 continue
@@ -102,16 +106,25 @@ def simulate_with_attack(wsn_field, routing, attack_timing, num_reports):
                 return False
         return True
 
-    # 초기 공격 실행
-    malicious_nodes = attack.execute_attack(num_attackers=NUM_ATTACKERS)
-    logger.info(f"\nInitial Sinkhole Attack Executed:")
-    logger.info(f"Number of malicious nodes: {len(malicious_nodes)}")
-    logger.info(f"Malicious node IDs: {malicious_nodes}")
+    def launch_attack(report_id):
+        nonlocal malicious_nodes
+        malicious_nodes = attack.execute_attack(num_attackers=NUM_ATTACKERS)
+        logger.info(f"\nSinkhole Attack Executed at report #{report_id}:")
+        logger.info(f"Number of malicious nodes: {len(malicious_nodes)}")
+        logger.info(f"Malicious node IDs: {malicious_nodes}")
+
+    # 지정된 시점이 시작(0%)이면 보고서 전송 전에 바로 공격 실행
+    if attack_at_report <= 0:
+        launch_attack(0)
 
     # 보고서 전송 시뮬레이션
     for report_id in range(1, num_reports + 1):
+        # 지정된 시점에 도달하면 공격 실행
+        if malicious_nodes is None and report_id >= attack_at_report:
+            launch_attack(report_id)
+
         # 공격 확률에 따라 소스 노드 선택
-        if np.random.randint(1, 101) <= ATTACK_PROBABILITY:
+        if malicious_nodes is not None and np.random.randint(1, 101) <= ATTACK_PROBABILITY:
             # affected 노드나 그 이웃 노드에서 보고서 생성
             affected_nodes, neighbor_nodes = attack.get_affected_and_neighbor_nodes()
             candidate_nodes = list(affected_nodes) + list(neighbor_nodes)

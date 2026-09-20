@@ -174,18 +174,37 @@ class Sinkhole(NetworkAttackBase):
 
     def launch_inside_attack(self, num_attackers=1):
         """내부 노드를 공격자로 변환"""
-        dense_grids = self.calculate_node_density()
+        best_locations = self.calculate_node_density()
+
+        # 노드 수가 많은 구역 순서로 정렬
+        sorted_quadrants = sorted(
+            best_locations.items(),
+            key=lambda x: x[1][2],  # x[1][2]는 노드 수
+            reverse=True
+        )
+
+        # 밀도 높은 구역 중심 근처의 실제 노드들을 후보로 선정
         candidate_nodes = []
-        
-        # 밀도 높은 지역의 노드들을 후보로 선정
-        for grid_pos, nodes in dense_grids:
-            candidate_nodes.extend(nodes)
+        for quadrant, (center_x, center_y, node_count) in sorted_quadrants:
+            for node in self.field.nodes.values():
+                if node.node_type != "normal" or node.node_id in candidate_nodes:
+                    continue
+                distance = np.sqrt(
+                    (node.pos_x - center_x)**2 + (node.pos_y - center_y)**2
+                )
+                if distance <= self.grid_size:
+                    candidate_nodes.append(node.node_id)
             if len(candidate_nodes) >= num_attackers * 3:  # 충분한 후보 확보
                 break
-        
-        # 후보 중에서 랜덤하게 선택
-        target_nodes = np.random.choice(candidate_nodes, 
-                                    size=num_attackers, 
+
+        # 후보가 부족하면 전체 정상 노드로 대체
+        if len(candidate_nodes) < num_attackers:
+            candidate_nodes = [node.node_id for node in self.field.nodes.values()
+                                if node.node_type == "normal"]
+
+        # 후보 중에서 랜덤하게 선택 (중복 선택 방지)
+        target_nodes = np.random.choice(candidate_nodes,
+                                    size=num_attackers,
                                     replace=False)
         
         for node_id in target_nodes:
